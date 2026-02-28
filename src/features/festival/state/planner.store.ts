@@ -46,6 +46,10 @@ export function usePlannerStore(festivalId: string) {
   const planned = useMemo(() => new Set(plannedSetIds), [plannedSetIds]);
   const favorites = useMemo(() => new Set(favoriteSetIds), [favoriteSetIds]);
 
+  function setPlan(ids: string[]) {
+    setPlannedSetIds(() => [...new Set(ids)]);
+  }
+
   function togglePlanned(id: string) {
     setPlannedSetIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
@@ -70,5 +74,6 @@ export function usePlannerStore(festivalId: string) {
     togglePlanned,
     toggleFavorite,
     clearPlan,
+    setPlan,
   };
 }
