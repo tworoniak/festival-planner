@@ -1,0 +1,99 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px;
+}
+
+.planned {
+  border-color: rgba(139, 92, 246, 0.65);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.12);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.band {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.meta {
+  margin-top: 4px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dot {
+  opacity: 0.6;
+}
+
+.conflict {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 90, 90, 0.55);
+  color: rgba(255, 140, 140, 0.95);
+}
+
+.genres {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.genre {
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: start;
+}
+
+.iconBtn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.planBtn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+  25% {
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.highlight {
+  animation: pulseRing 900ms ease-out 1;
+}

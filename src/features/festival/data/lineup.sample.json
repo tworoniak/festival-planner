@@ -1,0 +1,53 @@
+{
+  "festival": {
+    "id": "antihero-fest-2026",
+    "name": "Antihero Fest",
+    "days": [
+      { "id": "fri", "label": "Fri" },
+      { "id": "sat", "label": "Sat" }
+    ],
+    "stages": [
+      { "id": "main", "label": "Main Stage" },
+      { "id": "altar", "label": "The Altar" },
+      { "id": "crypt", "label": "The Crypt" }
+    ],
+    "sets": [
+      {
+        "id": "set1",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "THIS GIFT IS A CURSE",
+        "genres": ["black metal", "sludge"],
+        "start": "2026-07-17T18:30:00",
+        "end": "2026-07-17T19:15:00"
+      },
+      {
+        "id": "set2",
+        "dayId": "fri",
+        "stageId": "altar",
+        "bandName": "RWAKE",
+        "genres": ["sludge", "psychedelic"],
+        "start": "2026-07-17T18:45:00",
+        "end": "2026-07-17T19:30:00"
+      },
+      {
+        "id": "set3",
+        "dayId": "fri",
+        "stageId": "crypt",
+        "bandName": "HATE",
+        "genres": ["death metal", "blackened death"],
+        "start": "2026-07-17T19:20:00",
+        "end": "2026-07-17T20:05:00"
+      },
+      {
+        "id": "set4",
+        "dayId": "sat",
+        "stageId": "main",
+        "bandName": "YOB",
+        "genres": ["doom"],
+        "start": "2026-07-18T20:30:00",
+        "end": "2026-07-18T21:30:00"
+      }
+    ]
+  }
+}
