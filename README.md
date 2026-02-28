@@ -6,6 +6,16 @@ Browse the lineup by **day** and **stage**, filter by **genre**, **search bands*
 
 ---
 
+## 🚀 Live Demo
+
+[Metal Festival Planner](https://festival-planner-kappa.vercel.app)
+
+![Festival Planner screen 1.](/src/assets/screen-01.png 'Festival Planner screen 1.')
+![Festival Planner screen 2.](/src/assets/screen-02.png 'Festival Planner screen 2.')
+![Festival Planner screen 2.](/src/assets/screen-03.png 'Festival Planner screen 2.')
+
+---
+
 ## ✨ Features
 
 - 🗓️ Day tabs (Fri/Sat/etc.)
