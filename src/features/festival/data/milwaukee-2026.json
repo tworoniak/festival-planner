@@ -1,0 +1,82 @@
+{
+  "festival": {
+    "id": "milwaukee-2026",
+    "name": "Milwaukee Metal Fest 2026",
+    "days": [
+      { "id": "thur", "label": "Thursday" },
+      { "id": "fri", "label": "Friday" },
+      { "id": "sat", "label": "Saturday" },
+      { "id": "sun", "label": "Sunday" }
+    ],
+    "stages": [
+      { "id": "main", "label": "Main Stage" },
+      { "id": "second", "label": "Second Stage" },
+      { "id": "bar", "label": "Bar Stage" }
+    ],
+    "sets": [
+      {
+        "id": "ah1",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "THIS GIFT IS A CURSE",
+        "genres": ["black metal", "sludge"],
+        "start": "2026-07-17T18:30:00",
+        "end": "2026-07-17T19:15:00"
+      },
+      {
+        "id": "ah2",
+        "dayId": "fri",
+        "stageId": "second",
+        "bandName": "RWAKE",
+        "genres": ["sludge", "psychedelic"],
+        "start": "2026-07-17T18:45:00",
+        "end": "2026-07-17T19:30:00"
+      },
+      {
+        "id": "ah3",
+        "dayId": "fri",
+        "stageId": "bar",
+        "bandName": "HATE",
+        "genres": ["death metal", "blackened death"],
+        "start": "2026-07-17T19:20:00",
+        "end": "2026-07-17T20:05:00"
+      },
+      {
+        "id": "ah4",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "MGLA",
+        "genres": ["black metal"],
+        "start": "2026-07-17T20:15:00",
+        "end": "2026-07-17T21:10:00"
+      },
+      {
+        "id": "ah5",
+        "dayId": "sun",
+        "stageId": "main",
+        "bandName": "YOB",
+        "genres": ["doom"],
+        "start": "2026-07-18T20:30:00",
+        "end": "2026-07-18T21:30:00"
+      },
+      {
+        "id": "ah6",
+        "dayId": "sat",
+        "stageId": "bar",
+        "bandName": "BELL WITCH",
+        "genres": ["funeral doom"],
+        "start": "2026-07-18T20:45:00",
+        "end": "2026-07-18T21:45:00"
+      },
+      {
+        "id": "ah7",
+        "dayId": "thur",
+        "stageId": "second",
+        "bandName": "WOLVES IN THE THRONE ROOM",
+        "genres": ["atmospheric black metal"],
+        "start": "2026-07-18T21:00:00",
+        "end": "2026-07-18T21:50:00"
+      }
+    ]
+  }
+}

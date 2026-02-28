@@ -1,4 +1,4 @@
-# 🤘 Metal Festival Planner
+# 🤘 Metal Festival Planner v1.0
 
 A modern **React + TypeScript + Vite + Sass** web app for building your personal festival schedule.
 
