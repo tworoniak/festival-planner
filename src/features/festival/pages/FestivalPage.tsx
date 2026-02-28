@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams, useParams, Link } from 'react-router-dom';
 import styles from './FestivalPage.module.scss';
 
 import { useFestivalData } from '../hooks/useFestivalData';
@@ -11,6 +11,7 @@ import { MyPlanDrawer } from '../components/MyPlanDrawer/MyPlanDrawer';
 import { usePlannerStore } from '../state/planner.store';
 import { applyFilters, collectGenres, type Filters } from '../utils/filters';
 import { computeConflicts } from '../utils/conflicts';
+import { buildPlanParam, parsePlanParam } from '../utils/planUrl';
 import type { FestivalSet } from '../types/festival';
 
 export function FestivalPage() {
@@ -18,7 +19,7 @@ export function FestivalPage() {
   if (!festivalId) throw new Error('Missing festivalId');
 
   const { festival } = useFestivalData(festivalId);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const planner = usePlannerStore(festivalId);
   const [highlightedSetId, setHighlightedSetId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -90,8 +91,50 @@ export function FestivalPage() {
     });
   }
 
+  useEffect(() => {
+    const idsFromUrl = parsePlanParam(searchParams.get('plan'));
+    if (idsFromUrl.length === 0) return;
+
+    // Optional: validate ids exist in this festival
+    const validIds = new Set(festival.sets.map((s) => s.id));
+    const filtered = idsFromUrl.filter((id) => validIds.has(id));
+
+    if (filtered.length > 0) planner.setPlan(filtered);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [festivalId]);
+
+  useEffect(() => {
+    const current = searchParams.get('plan') ?? '';
+    const next = buildPlanParam(planner.plannedSetIds);
+
+    // avoid churn
+    if (current === next) return;
+
+    const sp = new URLSearchParams(searchParams);
+    if (next) sp.set('plan', next);
+    else sp.delete('plan');
+
+    setSearchParams(sp, { replace: true });
+  }, [planner.plannedSetIds, searchParams, setSearchParams]);
+
+  async function copyShareLink() {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      // Optional: toast later
+    } catch {
+      // fallback
+      window.prompt('Copy this link:', url);
+    }
+  }
   return (
     <div className='container'>
+      <div className={styles.backRow}>
+        <Link to='/' className={styles.backLink}>
+          ← All festivals
+        </Link>
+        <div className={styles.badge}>{festival.name}</div>
+      </div>
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>{festival.name}</h1>
@@ -110,9 +153,13 @@ export function FestivalPage() {
             ? ` • ${conflicts.length} conflict${conflicts.length === 1 ? '' : 's'}`
             : ''}
         </button>
-        <Link to='/' className={styles.backLink}>
-          ← All festivals
-        </Link>
+        <button
+          type='button'
+          className={styles.planButton}
+          onClick={copyShareLink}
+        >
+          Copy share link
+        </button>
       </header>
 
       <DayTabs
