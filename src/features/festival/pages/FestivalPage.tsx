@@ -139,6 +139,7 @@ export function FestivalPage() {
       <MyPlanDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        days={festival.days}
         plannedSets={plannedSets}
         conflicts={conflicts}
         onRemove={(id) => planner.togglePlanned(id)}

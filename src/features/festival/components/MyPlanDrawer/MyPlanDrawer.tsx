@@ -1,5 +1,5 @@
 import styles from './MyPlanDrawer.module.scss';
-import type { FestivalSet } from '../../types/festival';
+import type { FestivalDay, FestivalSet } from '../../types/festival';
 import type { Conflict } from '../../utils/conflicts';
 import { formatRange } from '../../utils/time';
 
@@ -7,6 +7,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
 
+  days: FestivalDay[];
   plannedSets: FestivalSet[];
   conflicts: Conflict[];
 
@@ -19,6 +20,7 @@ type Props = {
 export function MyPlanDrawer({
   isOpen,
   onClose,
+  days,
   plannedSets,
   conflicts,
   onRemove,
@@ -37,7 +39,9 @@ export function MyPlanDrawer({
             <div className={styles.sub}>
               {plannedSets.length} set{plannedSets.length === 1 ? '' : 's'}
               {conflicts.length > 0
-                ? ` • ${conflicts.length} conflict${conflicts.length === 1 ? '' : 's'}`
+                ? ` • ${conflicts.length} conflict${
+                    conflicts.length === 1 ? '' : 's'
+                  }`
                 : ''}
             </div>
           </div>
@@ -71,20 +75,59 @@ export function MyPlanDrawer({
                         <span className={styles.vs}>vs</span>
                         <span>{c.b.bandName}</span>
                       </div>
+
                       <div className={styles.conflictMeta}>
                         {formatRange(c.a.start, c.a.end)} overlaps{' '}
                         {formatRange(c.b.start, c.b.end)}
                       </div>
+
+                      <div className={styles.conflictMiniMeta}>
+                        <span className={styles.pill}>A</span> {c.a.bandName}
+                        <span className={styles.sep}>•</span>
+                        <span className={styles.pill}>B</span> {c.b.bandName}
+                      </div>
                     </div>
 
                     <div className={styles.conflictActions}>
-                      <button
-                        type='button'
-                        className={styles.resolveBtn}
-                        onClick={() => onResolveConflict(c.a.id)}
-                      >
-                        Resolve
-                      </button>
+                      <div className={styles.actionRow}>
+                        <button
+                          type='button'
+                          className={styles.resolveBtn}
+                          onClick={() => onResolveConflict(c.a.id)}
+                        >
+                          Go to A
+                        </button>
+                        <button
+                          type='button'
+                          className={styles.resolveBtn}
+                          onClick={() => onResolveConflict(c.b.id)}
+                        >
+                          Go to B
+                        </button>
+                      </div>
+
+                      <div className={styles.actionRow}>
+                        <button
+                          type='button'
+                          className={styles.removeConflictBtn}
+                          onClick={() => {
+                            onRemove(c.a.id);
+                            onClose();
+                          }}
+                        >
+                          Remove A
+                        </button>
+                        <button
+                          type='button'
+                          className={styles.removeConflictBtn}
+                          onClick={() => {
+                            onRemove(c.b.id);
+                            onClose();
+                          }}
+                        >
+                          Remove B
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -100,23 +143,43 @@ export function MyPlanDrawer({
                 Add sets to build your schedule.
               </div>
             ) : (
-              plannedSets.map((s) => (
-                <div key={s.id} className={styles.item}>
-                  <div className={styles.itemMain}>
-                    <div className={styles.band}>{s.bandName}</div>
-                    <div className={styles.meta}>
-                      {formatRange(s.start, s.end)}
+              days
+                .filter((d) => plannedSets.some((s) => s.dayId === d.id))
+                .map((d) => {
+                  const setsForDay = plannedSets
+                    .filter((s) => s.dayId === d.id)
+                    .sort(
+                      (a, b) =>
+                        new Date(a.start).getTime() -
+                        new Date(b.start).getTime(),
+                    );
+
+                  return (
+                    <div key={d.id} className={styles.dayGroup}>
+                      <div className={styles.dayTitle}>{d.label}</div>
+
+                      <div className={styles.dayList}>
+                        {setsForDay.map((s) => (
+                          <div key={s.id} className={styles.item}>
+                            <div className={styles.itemMain}>
+                              <div className={styles.band}>{s.bandName}</div>
+                              <div className={styles.meta}>
+                                {formatRange(s.start, s.end)}
+                              </div>
+                            </div>
+                            <button
+                              type='button'
+                              className={styles.remove}
+                              onClick={() => onRemove(s.id)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <button
-                    type='button'
-                    className={styles.remove}
-                    onClick={() => onRemove(s.id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))
+                  );
+                })
             )}
           </section>
         </div>
