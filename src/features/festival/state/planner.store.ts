@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 
-const KEY = 'mfp.planner.v1';
+const BASE_KEY = 'mfp.planner.v1';
 
 type StoredPlanner = {
   plannedSetIds: string[];
   favoriteSetIds: string[];
 };
 
-function readStored(): StoredPlanner {
+function readStored(key: string): StoredPlanner {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return { plannedSetIds: [], favoriteSetIds: [] };
     const parsed = JSON.parse(raw) as StoredPlanner;
     return {
@@ -25,12 +25,14 @@ function readStored(): StoredPlanner {
   }
 }
 
-export function usePlannerStore() {
+export function usePlannerStore(festivalId: string) {
+  const KEY = `${BASE_KEY}:${festivalId}`;
+
   const [plannedSetIds, setPlannedSetIds] = useState<string[]>(
-    () => readStored().plannedSetIds,
+    () => readStored(KEY).plannedSetIds,
   );
   const [favoriteSetIds, setFavoriteSetIds] = useState<string[]>(
-    () => readStored().favoriteSetIds,
+    () => readStored(KEY).favoriteSetIds,
   );
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function usePlannerStore() {
       favoriteSetIds,
     } satisfies StoredPlanner);
     localStorage.setItem(KEY, payload);
-  }, [plannedSetIds, favoriteSetIds]);
+  }, [KEY, plannedSetIds, favoriteSetIds]);
 
   const planned = useMemo(() => new Set(plannedSetIds), [plannedSetIds]);
   const favorites = useMemo(() => new Set(favoriteSetIds), [favoriteSetIds]);

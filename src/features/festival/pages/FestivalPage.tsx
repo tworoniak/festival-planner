@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import styles from './FestivalPage.module.scss';
 
 import { useFestivalData } from '../hooks/useFestivalData';
@@ -13,8 +14,12 @@ import { computeConflicts } from '../utils/conflicts';
 import type { FestivalSet } from '../types/festival';
 
 export function FestivalPage() {
-  const { festival } = useFestivalData();
-  const planner = usePlannerStore();
+  const { festivalId } = useParams<{ festivalId: string }>();
+  if (!festivalId) throw new Error('Missing festivalId');
+
+  const { festival } = useFestivalData(festivalId);
+
+  const planner = usePlannerStore(festivalId);
   const [highlightedSetId, setHighlightedSetId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -105,6 +110,9 @@ export function FestivalPage() {
             ? ` • ${conflicts.length} conflict${conflicts.length === 1 ? '' : 's'}`
             : ''}
         </button>
+        <Link to='/' className={styles.backLink}>
+          ← All festivals
+        </Link>
       </header>
 
       <DayTabs
