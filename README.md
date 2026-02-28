@@ -1,8 +1,18 @@
-# 🤘 Metal Festival Planner
+# 🤘 Metal Festival Planner v1.0
 
 A modern **React + TypeScript + Vite + Sass** web app for building your personal festival schedule.
 
 Browse the lineup by **day** and **stage**, filter by **genre**, **search bands**, save **favorites**, and add sets to **My Plan** with automatic **conflict detection** (overlapping sets).
+
+---
+
+## 🚀 Live Demo
+
+[Metal Festival Planner](https://festival-planner-kappa.vercel.app)
+
+![Festival Planner screen 1.](/src/assets/screen-01.png 'Festival Planner screen 1.')
+![Festival Planner screen 2.](/src/assets/screen-02.png 'Festival Planner screen 2.')
+![Festival Planner screen 2.](/src/assets/screen-03.png 'Festival Planner screen 2.')
 
 ---
 

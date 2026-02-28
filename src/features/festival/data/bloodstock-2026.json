@@ -15,67 +15,76 @@
     ],
     "sets": [
       {
-        "id": "ah1",
-        "dayId": "fri",
+        "id": "boa1",
+        "dayId": "thur",
         "stageId": "main",
-        "bandName": "THIS GIFT IS A CURSE",
-        "genres": ["black metal", "sludge"],
-        "start": "2026-07-17T18:30:00",
-        "end": "2026-07-17T19:15:00"
+        "bandName": "SAXON",
+        "genres": ["nwobhm", "metal"],
+        "start": "2026-07-06T18:30:00",
+        "end": "2026-07-06T19:15:00"
       },
       {
-        "id": "ah2",
-        "dayId": "fri",
-        "stageId": "sophie",
-        "bandName": "RWAKE",
-        "genres": ["sludge", "psychedelic"],
-        "start": "2026-07-17T18:45:00",
-        "end": "2026-07-17T19:30:00"
-      },
-      {
-        "id": "ah3",
-        "dayId": "sophie",
-        "stageId": "crypt",
-        "bandName": "HATE",
-        "genres": ["death metal", "blackened death"],
-        "start": "2026-07-17T19:20:00",
-        "end": "2026-07-17T20:05:00"
-      },
-      {
-        "id": "ah4",
-        "dayId": "fri",
+        "id": "boa2",
+        "dayId": "thur",
         "stageId": "main",
-        "bandName": "MGLA",
-        "genres": ["black metal"],
-        "start": "2026-07-17T20:15:00",
-        "end": "2026-07-17T21:10:00"
+        "bandName": "EVIL SCARECROW",
+        "genres": ["black metal", "thrash metal"],
+        "start": "2026-07-06T18:45:00",
+        "end": "2026-07-06T19:30:00"
       },
       {
-        "id": "ah5",
-        "dayId": "sun",
+        "id": "boa3",
+        "dayId": "thur",
         "stageId": "main",
-        "bandName": "YOB",
-        "genres": ["doom"],
-        "start": "2026-07-18T20:30:00",
-        "end": "2026-07-18T21:30:00"
+        "bandName": "HEAVYSAURUS",
+        "genres": ["dino-metal"],
+        "start": "2026-07-06T19:20:00",
+        "end": "2026-07-06T20:05:00"
       },
       {
-        "id": "ah6",
-        "dayId": "sat",
-        "stageId": "newblood",
-        "bandName": "BELL WITCH",
-        "genres": ["funeral doom"],
-        "start": "2026-07-18T20:45:00",
-        "end": "2026-07-18T21:45:00"
-      },
-      {
-        "id": "ah7",
+        "id": "boa4",
         "dayId": "thur",
         "stageId": "sophie",
-        "bandName": "WOLVES IN THE THRONE ROOM",
-        "genres": ["atmospheric black metal"],
-        "start": "2026-07-18T21:00:00",
-        "end": "2026-07-18T21:50:00"
+        "bandName": "CRYPTOPSY",
+        "genres": ["death metal"],
+        "start": "2026-07-06T20:15:00",
+        "end": "2026-07-06T21:10:00"
+      },
+      {
+        "id": "boa5",
+        "dayId": "thur",
+        "stageId": "sophie",
+        "bandName": "BLACK SPIDERS",
+        "genres": ["rock"],
+        "start": "2026-07-06T20:30:00",
+        "end": "2026-07-06T21:30:00"
+      },
+      {
+        "id": "boa6",
+        "dayId": "thur",
+        "stageId": "sophie",
+        "bandName": "THE HELL",
+        "genres": ["hardcore", "metalcore"],
+        "start": "2026-07-06T20:45:00",
+        "end": "2026-07-06T21:45:00"
+      },
+      {
+        "id": "boa7",
+        "dayId": "thur",
+        "stageId": "sophie",
+        "bandName": "MANTIS DEFEATS JAGUAR",
+        "genres": ["metal"],
+        "start": "2026-07-06T21:00:00",
+        "end": "2026-07-06T21:50:00"
+      },
+      {
+        "id": "boa8",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "LAMB OF GOD",
+        "genres": ["metal", "groove metal"],
+        "start": "2026-07-07T21:00:00",
+        "end": "2026-07-07T21:50:00"
       }
     ]
   }
