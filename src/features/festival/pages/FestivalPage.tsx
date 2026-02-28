@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams, useParams, Link } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import styles from './FestivalPage.module.scss';
 
 import { useFestivalData } from '../hooks/useFestivalData';
@@ -14,38 +14,62 @@ import { computeConflicts } from '../utils/conflicts';
 import { buildPlanParam, parsePlanParam } from '../utils/planUrl';
 import type { FestivalSet } from '../types/festival';
 
+import { useToast } from '../../../components/ui/Toast';
+
 export function FestivalPage() {
   const { festivalId } = useParams<{ festivalId: string }>();
   if (!festivalId) throw new Error('Missing festivalId');
 
   const { festival } = useFestivalData(festivalId);
-  const [searchParams, setSearchParams] = useSearchParams();
   const planner = usePlannerStore(festivalId);
-  const [highlightedSetId, setHighlightedSetId] = useState<string | null>(null);
+  const toast = useToast();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [highlightedSetId, setHighlightedSetId] = useState<string | null>(null);
 
-  function resolveConflict(setId: string) {
-    setDrawerOpen(false);
-
-    // Allow drawer to start closing before scroll (helps visual)
-    window.setTimeout(() => {
-      const el = document.getElementById(`set-${setId}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setHighlightedSetId(setId);
-
-        // clear highlight after animation
-        window.setTimeout(() => setHighlightedSetId(null), 1000);
-      }
-    }, 80);
-  }
-
+  // Filters init from festival day list
   const [filters, setFilters] = useState<Filters>(() => ({
     dayId: festival.days[0]?.id ?? 'day1',
     query: '',
     selectedGenres: [],
     favoritesOnly: false,
   }));
+
+  // Test if Toasts work.
+
+  // useEffect(() => {
+  //   toast.push({
+  //     title: 'Test Toast',
+  //     message: 'If you see this, toast works.',
+  //     variant: 'success',
+  //   });
+  // }, []);
+
+  // If festival changes (switching routes), keep filters.dayId valid
+  useEffect(() => {
+    setFilters((prev) => {
+      const stillValid = festival.days.some((d) => d.id === prev.dayId);
+      return stillValid
+        ? prev
+        : { ...prev, dayId: festival.days[0]?.id ?? prev.dayId };
+    });
+  }, [festival.days]);
+
+  function resolveConflict(setId: string) {
+    setDrawerOpen(false);
+
+    window.setTimeout(() => {
+      const el = document.getElementById(`set-${setId}`);
+      if (!el) return;
+
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setHighlightedSetId(setId);
+
+      window.setTimeout(() => setHighlightedSetId(null), 1000);
+    }, 80);
+  }
 
   const allGenres = useMemo(
     () => collectGenres(festival.sets),
@@ -63,6 +87,7 @@ export function FestivalPage() {
     const sets = planner.plannedSetIds
       .map((id) => byId.get(id))
       .filter(Boolean) as FestivalSet[];
+
     return sets.sort(
       (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
     );
@@ -91,23 +116,35 @@ export function FestivalPage() {
     });
   }
 
+  /**
+   * ✅ Load plan from URL ONCE per festival route.
+   * We intentionally don't depend on searchParams to avoid overwriting user's edits repeatedly.
+   */
   useEffect(() => {
     const idsFromUrl = parsePlanParam(searchParams.get('plan'));
     if (idsFromUrl.length === 0) return;
 
-    // Optional: validate ids exist in this festival
     const validIds = new Set(festival.sets.map((s) => s.id));
     const filtered = idsFromUrl.filter((id) => validIds.has(id));
 
-    if (filtered.length > 0) planner.setPlan(filtered);
+    if (filtered.length > 0) {
+      planner.setPlan(filtered);
+      toast.push({
+        variant: 'success',
+        title: 'Plan loaded',
+        message: `Loaded ${filtered.length} set${filtered.length === 1 ? '' : 's'} from shared link.`,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [festivalId]);
+  }, [festivalId]); // intentionally only on festival change
 
+  /**
+   * ✅ Keep URL in sync with current plan.
+   */
   useEffect(() => {
     const current = searchParams.get('plan') ?? '';
     const next = buildPlanParam(planner.plannedSetIds);
 
-    // avoid churn
     if (current === next) return;
 
     const sp = new URLSearchParams(searchParams);
@@ -119,14 +156,85 @@ export function FestivalPage() {
 
   async function copyShareLink() {
     const url = window.location.href;
+
     try {
       await navigator.clipboard.writeText(url);
-      // Optional: toast later
+      toast.push({
+        variant: 'success',
+        title: 'Link copied',
+        message: 'Share link copied to clipboard.',
+      });
     } catch {
-      // fallback
       window.prompt('Copy this link:', url);
+      toast.push({
+        variant: 'default',
+        title: 'Copy link',
+        message:
+          'Your browser blocked clipboard access — copied via prompt instead.',
+        durationMs: 3200,
+      });
     }
   }
+
+  function clearPlanWithUndo() {
+    const snapshot = [...planner.plannedSetIds];
+    if (snapshot.length === 0) return;
+
+    planner.clearPlan();
+
+    toast.push({
+      title: 'Plan cleared',
+      message: `Removed ${snapshot.length} set${snapshot.length === 1 ? '' : 's'}.`,
+      durationMs: 6000,
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          planner.setPlan(snapshot);
+          toast.push({
+            variant: 'success',
+            title: 'Restored',
+            message: 'Your plan is back.',
+            durationMs: 2000,
+          });
+        },
+      },
+    });
+  }
+
+  function findSetName(setId: string) {
+    return festival.sets.find((s) => s.id === setId)?.bandName ?? 'Set';
+  }
+
+  function removeWithUndo(setId: string) {
+    // Only do undo behavior when it's currently planned
+    if (!planner.planned.has(setId)) return;
+
+    planner.togglePlanned(setId);
+
+    const name = findSetName(setId);
+
+    toast.push({
+      variant: 'default',
+      title: 'Removed from plan',
+      message: name,
+      durationMs: 5000,
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          // add it back
+          if (!planner.planned.has(setId)) planner.togglePlanned(setId);
+
+          toast.push({
+            variant: 'success',
+            title: 'Restored',
+            message: name,
+            durationMs: 2000,
+          });
+        },
+      },
+    });
+  }
+
   return (
     <div className='container'>
       <div className={styles.backRow}>
@@ -135,6 +243,7 @@ export function FestivalPage() {
         </Link>
         <div className={styles.badge}>{festival.name}</div>
       </div>
+
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>{festival.name}</h1>
@@ -143,23 +252,26 @@ export function FestivalPage() {
           </div>
         </div>
 
-        <button
-          type='button'
-          className={styles.planButton}
-          onClick={() => setDrawerOpen(true)}
-        >
-          My Plan ({plannedSets.length})
-          {conflicts.length > 0
-            ? ` • ${conflicts.length} conflict${conflicts.length === 1 ? '' : 's'}`
-            : ''}
-        </button>
-        <button
-          type='button'
-          className={styles.planButton}
-          onClick={copyShareLink}
-        >
-          Copy share link
-        </button>
+        <div className={styles.headerActions}>
+          <button
+            type='button'
+            className={styles.planButton}
+            onClick={() => setDrawerOpen(true)}
+          >
+            My Plan ({plannedSets.length})
+            {conflicts.length > 0
+              ? ` • ${conflicts.length} conflict${conflicts.length === 1 ? '' : 's'}`
+              : ''}
+          </button>
+
+          <button
+            type='button'
+            className={styles.planButton}
+            onClick={copyShareLink}
+          >
+            Copy share link
+          </button>
+        </div>
       </header>
 
       <DayTabs
@@ -187,7 +299,11 @@ export function FestivalPage() {
         favoriteIds={planner.favorites}
         conflictingIds={conflictingIds}
         highlightedSetId={highlightedSetId}
-        onTogglePlanned={(id) => planner.togglePlanned(id)}
+        onTogglePlanned={(id) => {
+          const isRemoving = planner.planned.has(id);
+          if (isRemoving) removeWithUndo(id);
+          else planner.togglePlanned(id);
+        }}
         onToggleFavorite={(id) => planner.toggleFavorite(id)}
       />
 
@@ -197,8 +313,8 @@ export function FestivalPage() {
         days={festival.days}
         plannedSets={plannedSets}
         conflicts={conflicts}
-        onRemove={(id) => planner.togglePlanned(id)}
-        onClear={() => planner.clearPlan()}
+        onRemove={(id) => removeWithUndo(id)}
+        onClear={clearPlanWithUndo}
         onResolveConflict={resolveConflict}
       />
     </div>

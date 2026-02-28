@@ -1,0 +1,70 @@
+.viewport {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  display: grid;
+  gap: 10px;
+  z-index: 2000; // above drawers/modals
+  width: min(360px, calc(100vw - 28px));
+}
+
+.toast {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: calc(var(--r) + 4px);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.success {
+  border-color: rgba(80, 220, 140, 0.35);
+}
+
+.danger {
+  border-color: rgba(255, 90, 90, 0.45);
+}
+
+.content {
+  display: grid;
+  gap: 4px;
+}
+
+.title {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.message {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.25rem;
+}
+
+.close {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 0;
+  font-size: 18px;
+}
+
+.action {
+  margin-top: 8px;
+  width: fit-content;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}

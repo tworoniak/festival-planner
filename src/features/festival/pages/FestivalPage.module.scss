@@ -52,3 +52,10 @@
   font-size: 12px;
   color: var(--text);
 }
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
