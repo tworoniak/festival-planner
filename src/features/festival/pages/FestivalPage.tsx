@@ -7,6 +7,8 @@ import { DayTabs } from '../components/DayTabs/DayTabs';
 import { FiltersBar } from '../components/FiltersBar/FiltersBar';
 import { StageSchedule } from '../components/StageSchedule/StageSchedule';
 import { MyPlanDrawer } from '../components/MyPlanDrawer/MyPlanDrawer';
+import { ViewToggle } from '../components/ViewToggle/ViewToggle';
+import { TimelineView } from '../components/TimelineView/TimelineView';
 
 import { usePlannerStore } from '../state/planner.store';
 import { applyFilters, collectGenres, type Filters } from '../utils/filters';
@@ -35,17 +37,8 @@ export function FestivalPage() {
     query: '',
     selectedGenres: [],
     favoritesOnly: false,
+    view: 'list',
   }));
-
-  // Test if Toasts work.
-
-  // useEffect(() => {
-  //   toast.push({
-  //     title: 'Test Toast',
-  //     message: 'If you see this, toast works.',
-  //     variant: 'success',
-  //   });
-  // }, []);
 
   // If festival changes (switching routes), keep filters.dayId valid
   useEffect(() => {
@@ -58,7 +51,7 @@ export function FestivalPage() {
   }, [festival.days]);
 
   function resolveConflict(setId: string) {
-    setDrawerOpen(false);
+    if (drawerOpen) setDrawerOpen(false);
 
     window.setTimeout(() => {
       const el = document.getElementById(`set-${setId}`);
@@ -292,20 +285,42 @@ export function FestivalPage() {
         }
       />
 
-      <StageSchedule
-        stages={festival.stages}
-        sets={visibleSets}
-        plannedIds={planner.planned}
-        favoriteIds={planner.favorites}
-        conflictingIds={conflictingIds}
-        highlightedSetId={highlightedSetId}
-        onTogglePlanned={(id) => {
-          const isRemoving = planner.planned.has(id);
-          if (isRemoving) removeWithUndo(id);
-          else planner.togglePlanned(id);
-        }}
-        onToggleFavorite={(id) => planner.toggleFavorite(id)}
+      <ViewToggle
+        value={filters.view ?? 'list'}
+        onChange={(view) => setFilters((p) => ({ ...p, view }))}
       />
+
+      {(filters.view ?? 'list') === 'list' ? (
+        <StageSchedule
+          stages={festival.stages}
+          sets={visibleSets}
+          plannedIds={planner.planned}
+          favoriteIds={planner.favorites}
+          conflictingIds={conflictingIds}
+          highlightedSetId={highlightedSetId}
+          onTogglePlanned={(id) => {
+            const isRemoving = planner.planned.has(id);
+            if (isRemoving)
+              removeWithUndo(id); // if you wired undo
+            else planner.togglePlanned(id);
+          }}
+          onToggleFavorite={(id) => planner.toggleFavorite(id)}
+        />
+      ) : (
+        <TimelineView
+          stages={festival.stages}
+          sets={visibleSets.filter((s) => s.dayId === filters.dayId)} // ensure one day
+          plannedIds={planner.planned}
+          conflictingIds={conflictingIds}
+          highlightedSetId={highlightedSetId}
+          onTogglePlanned={(id) => {
+            const isRemoving = planner.planned.has(id);
+            if (isRemoving) removeWithUndo(id);
+            else planner.togglePlanned(id);
+          }}
+          onResolveScroll={resolveConflict}
+        />
+      )}
 
       <MyPlanDrawer
         isOpen={drawerOpen}

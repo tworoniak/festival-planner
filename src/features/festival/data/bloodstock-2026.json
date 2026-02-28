@@ -1,7 +1,7 @@
 {
   "festival": {
     "id": "bloodstock-2026",
-    "name": "Bloodstock Open Air",
+    "name": "Bloodstock Open Air 2026",
     "days": [
       { "id": "thur", "label": "Thursday" },
       { "id": "fri", "label": "Friday" },
