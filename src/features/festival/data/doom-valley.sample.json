@@ -1,0 +1,70 @@
+{
+  "festival": {
+    "id": "doom-valley-2026",
+    "name": "Doom Valley",
+    "days": [
+      { "id": "day1", "label": "Day 1" },
+      { "id": "day2", "label": "Day 2" }
+    ],
+    "stages": [
+      { "id": "valley", "label": "The Valley" },
+      { "id": "ritual", "label": "Ritual Stage" }
+    ],
+    "sets": [
+      {
+        "id": "dv1",
+        "dayId": "day1",
+        "stageId": "valley",
+        "bandName": "MONOLORD",
+        "genres": ["doom", "stoner"],
+        "start": "2026-08-22T17:00:00",
+        "end": "2026-08-22T18:00:00"
+      },
+      {
+        "id": "dv2",
+        "dayId": "day1",
+        "stageId": "ritual",
+        "bandName": "PALLBEARER",
+        "genres": ["doom", "epic doom"],
+        "start": "2026-08-22T17:30:00",
+        "end": "2026-08-22T18:30:00"
+      },
+      {
+        "id": "dv3",
+        "dayId": "day1",
+        "stageId": "valley",
+        "bandName": "SLEEP",
+        "genres": ["stoner doom"],
+        "start": "2026-08-22T19:00:00",
+        "end": "2026-08-22T20:30:00"
+      },
+      {
+        "id": "dv4",
+        "dayId": "day2",
+        "stageId": "ritual",
+        "bandName": "AHAB",
+        "genres": ["funeral doom"],
+        "start": "2026-08-23T18:00:00",
+        "end": "2026-08-23T19:00:00"
+      },
+      {
+        "id": "dv5",
+        "dayId": "day2",
+        "stageId": "valley",
+        "bandName": "CONAN",
+        "genres": ["sludge", "doom"],
+        "start": "2026-08-23T18:15:00",
+        "end": "2026-08-23T19:15:00"
+      },
+      {
+        "id": "dv6",
+        "dayId": "day2",
+        "stageId": "valley",
+        "bandName": "ELECTRIC WIZARD",
+        "genres": ["doom", "stoner"],
+        "start": "2026-08-23T20:00:00",
+        "end": "2026-08-23T21:30:00"
+      }
+    ]
+  }
+}

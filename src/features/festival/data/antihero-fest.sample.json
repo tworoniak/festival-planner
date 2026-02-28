@@ -3,8 +3,8 @@
     "id": "antihero-fest-2026",
     "name": "Antihero Fest",
     "days": [
-      { "id": "fri", "label": "Fri" },
-      { "id": "sat", "label": "Sat" }
+      { "id": "fri", "label": "Friday" },
+      { "id": "sat", "label": "Saturday" }
     ],
     "stages": [
       { "id": "main", "label": "Main Stage" },
@@ -13,7 +13,7 @@
     ],
     "sets": [
       {
-        "id": "set1",
+        "id": "ah1",
         "dayId": "fri",
         "stageId": "main",
         "bandName": "THIS GIFT IS A CURSE",
@@ -22,7 +22,7 @@
         "end": "2026-07-17T19:15:00"
       },
       {
-        "id": "set2",
+        "id": "ah2",
         "dayId": "fri",
         "stageId": "altar",
         "bandName": "RWAKE",
@@ -31,7 +31,7 @@
         "end": "2026-07-17T19:30:00"
       },
       {
-        "id": "set3",
+        "id": "ah3",
         "dayId": "fri",
         "stageId": "crypt",
         "bandName": "HATE",
@@ -40,13 +40,40 @@
         "end": "2026-07-17T20:05:00"
       },
       {
-        "id": "set4",
+        "id": "ah4",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "MGLA",
+        "genres": ["black metal"],
+        "start": "2026-07-17T20:15:00",
+        "end": "2026-07-17T21:10:00"
+      },
+      {
+        "id": "ah5",
         "dayId": "sat",
         "stageId": "main",
         "bandName": "YOB",
         "genres": ["doom"],
         "start": "2026-07-18T20:30:00",
         "end": "2026-07-18T21:30:00"
+      },
+      {
+        "id": "ah6",
+        "dayId": "sat",
+        "stageId": "altar",
+        "bandName": "BELL WITCH",
+        "genres": ["funeral doom"],
+        "start": "2026-07-18T20:45:00",
+        "end": "2026-07-18T21:45:00"
+      },
+      {
+        "id": "ah7",
+        "dayId": "sat",
+        "stageId": "crypt",
+        "bandName": "WOLVES IN THE THRONE ROOM",
+        "genres": ["atmospheric black metal"],
+        "start": "2026-07-18T21:00:00",
+        "end": "2026-07-18T21:50:00"
       }
     ]
   }
