@@ -5,6 +5,7 @@ export type Filters = {
   query: string;
   selectedGenres: string[];
   favoritesOnly: boolean;
+  view?: 'list' | 'timeline';
 };
 
 export function normalize(s: string) {
