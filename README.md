@@ -44,6 +44,16 @@ Browse the lineup by **day** and **stage**, filter by **genre**, **search bands*
 src/
   app/
     App.tsx
+
+  components/
+    ui/
+      index.ts
+      toast.context.ts
+      toast.types.ts
+      ToastProvider.module.scss
+      ToastProvider.tsx
+      useToast.ts
+
   features/
     festival/
       components/
@@ -62,22 +72,33 @@ src/
         MyPlanDrawer/
           MyPlanDrawer.tsx
           MyPlanDrawer.module.scss
+
       data/
-        lineup.sample.json
+        festivals.ts
+        lineup.sample.json //add more festival .json files as needed.
         lineup.schema.ts
+
       hooks/
         useFestivalData.ts
+
+      pages/
+        FestivalList.module.scss
+        FestivalList.tsx
+        FestivalPage.module.scss
+        FestivalPage.tsx
+
       state/
         planner.store.ts
+
       types/
         festival.ts
+
       utils/
         conflicts.ts
         filters.ts
+        planUrl.ts
         time.ts
-      pages/
-        FestivalPage.tsx
-        FestivalPage.module.scss
+
   styles/
     base/
       _reset.scss
@@ -85,6 +106,7 @@ src/
     abstracts/
       _tokens.scss
     main.scss
+
   main.tsx
 ```
 
