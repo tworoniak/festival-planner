@@ -176,6 +176,49 @@
   align-items: start;
 }
 
+.conflictMiniMeta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.sep {
+  opacity: 0.7;
+  margin: 0 2px;
+}
+
+.conflictActions {
+  display: grid;
+  gap: 8px;
+  align-items: start;
+  min-width: 140px;
+}
+
+.actionRow {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 .resolveBtn {
   border: 1px solid var(--border);
   background: var(--panel2);
@@ -183,4 +226,30 @@
   padding: 8px 10px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.removeConflictBtn {
+  border: 1px solid rgba(255, 90, 90, 0.55);
+  background: rgba(255, 90, 90, 0.1);
+  color: rgba(255, 180, 180, 0.95);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dayGroup {
+  display: grid;
+  gap: 8px;
+}
+
+.dayTitle {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.dayList {
+  display: grid;
+  gap: 10px;
 }
