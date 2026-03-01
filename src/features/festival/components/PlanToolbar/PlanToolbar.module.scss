@@ -1,0 +1,33 @@
+.bar {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: var(--r);
+  padding: 12px 14px;
+}
+
+.title {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+}

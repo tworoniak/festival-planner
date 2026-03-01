@@ -7,8 +7,9 @@ import { DayTabs } from '../components/DayTabs/DayTabs';
 import { FiltersBar } from '../components/FiltersBar/FiltersBar';
 import { StageSchedule } from '../components/StageSchedule/StageSchedule';
 import { MyPlanDrawer } from '../components/MyPlanDrawer/MyPlanDrawer';
-import { ViewToggle } from '../components/ViewToggle/ViewToggle';
+import { PlanToolbar } from '../components/PlanToolbar/PlanToolbar';
 import { TimelineView } from '../components/TimelineView/TimelineView';
+import { ViewToggle } from '../components/ViewToggle/ViewToggle';
 
 import { usePlannerStore } from '../state/planner.store';
 import { applyFilters, collectGenres, type Filters } from '../utils/filters';
@@ -86,6 +87,10 @@ export function FestivalPage() {
     );
   }, [festival.sets, planner.plannedSetIds]);
 
+  const plannedSetsForDay = useMemo(() => {
+    return plannedSets.filter((s) => s.dayId === filters.dayId);
+  }, [plannedSets, filters.dayId]);
+
   const conflicts = useMemo(() => computeConflicts(plannedSets), [plannedSets]);
 
   const conflictingIds = useMemo(() => {
@@ -109,10 +114,10 @@ export function FestivalPage() {
     });
   }
 
-  /**
-   * ✅ Load plan from URL ONCE per festival route.
-   * We intentionally don't depend on searchParams to avoid overwriting user's edits repeatedly.
-   */
+  function onPrintPlan() {
+    window.print();
+  }
+
   useEffect(() => {
     const idsFromUrl = parsePlanParam(searchParams.get('plan'));
     if (idsFromUrl.length === 0) return;
@@ -231,16 +236,16 @@ export function FestivalPage() {
   return (
     <div className='container'>
       <div className={styles.backRow}>
-        <Link to='/' className={styles.backLink}>
+        <Link to='/' className={`${styles.backLink} noPrint`}>
           ← All festivals
         </Link>
-        <div className={styles.badge}>{festival.name}</div>
+        <div className={`${styles.badge} noPrint`}>{festival.name}</div>
       </div>
 
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>{festival.name}</h1>
-          <div className={styles.subtitle}>
+          <div className={`${styles.subtitle} noPrint`}>
             Build your schedule • spot conflicts • save it locally
           </div>
         </div>
@@ -248,7 +253,7 @@ export function FestivalPage() {
         <div className={styles.headerActions}>
           <button
             type='button'
-            className={styles.planButton}
+            className={`${styles.planButton} noPrint`}
             onClick={() => setDrawerOpen(true)}
           >
             My Plan ({plannedSets.length})
@@ -259,7 +264,7 @@ export function FestivalPage() {
 
           <button
             type='button'
-            className={styles.planButton}
+            className={`${styles.planButton} noPrint`}
             onClick={copyShareLink}
           >
             Copy share link
@@ -285,10 +290,12 @@ export function FestivalPage() {
         }
       />
 
-      <ViewToggle
-        value={filters.view ?? 'list'}
-        onChange={(view) => setFilters((p) => ({ ...p, view }))}
-      />
+      <div className='noPrint'>
+        <ViewToggle
+          value={filters.view ?? 'list'}
+          onChange={(view) => setFilters((p) => ({ ...p, view }))}
+        />
+      </div>
 
       {(filters.view ?? 'list') === 'list' ? (
         <StageSchedule
@@ -300,16 +307,15 @@ export function FestivalPage() {
           highlightedSetId={highlightedSetId}
           onTogglePlanned={(id) => {
             const isRemoving = planner.planned.has(id);
-            if (isRemoving)
-              removeWithUndo(id); // if you wired undo
+            if (isRemoving) removeWithUndo(id);
             else planner.togglePlanned(id);
           }}
           onToggleFavorite={(id) => planner.toggleFavorite(id)}
         />
-      ) : (
+      ) : (filters.view ?? 'list') === 'timeline' ? (
         <TimelineView
           stages={festival.stages}
-          sets={visibleSets.filter((s) => s.dayId === filters.dayId)} // ensure one day
+          sets={visibleSets.filter((s) => s.dayId === filters.dayId)}
           plannedIds={planner.planned}
           conflictingIds={conflictingIds}
           highlightedSetId={highlightedSetId}
@@ -320,6 +326,33 @@ export function FestivalPage() {
           }}
           onResolveScroll={resolveConflict}
         />
+      ) : (
+        <>
+          <div className='noPrint'>
+            <PlanToolbar
+              title={`My Plan — ${festival.days.find((d) => d.id === filters.dayId)?.label ?? ''}`}
+              subtitle={`${plannedSetsForDay.length} set${
+                plannedSetsForDay.length === 1 ? '' : 's'
+              } • ${conflicts.filter((c) => c.a.dayId === filters.dayId).length} conflict${
+                conflicts.filter((c) => c.a.dayId === filters.dayId).length ===
+                1
+                  ? ''
+                  : 's'
+              }`}
+              onPrint={onPrintPlan}
+            />
+          </div>
+
+          <TimelineView
+            stages={festival.stages}
+            sets={plannedSetsForDay}
+            plannedIds={planner.planned}
+            conflictingIds={conflictingIds}
+            highlightedSetId={highlightedSetId}
+            onTogglePlanned={(id) => removeWithUndo(id)} // removing from plan view is always undoable
+            onResolveScroll={resolveConflict}
+          />
+        </>
       )}
 
       <MyPlanDrawer

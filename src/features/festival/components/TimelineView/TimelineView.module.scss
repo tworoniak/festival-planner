@@ -4,13 +4,39 @@
   border-radius: var(--r);
   background: var(--panel);
   overflow: hidden;
+
+  --time-col: 90px;
+  --stage-col: 280px; /* single source of truth */
+
+  /* you already have these */
+  position: relative;
+
+  /* ✅ important: create a scroll container for vertical scroll */
+  max-height: min(72vh, 720px);
+  overflow: auto; /* vertical + horizontal scrolling is handled by .scrollX */
+
+  &::-webkit-scrollbar {
+    opacity: 0;
+  }
+
+  &:hover::-webkit-scrollbar {
+    opacity: 1;
+  }
 }
 
 .header {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: var(--time-col) 1fr;
   border-bottom: 1px solid var(--border);
   background: var(--panel2);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  position: sticky;
+  top: 0;
+  z-index: 5; /* above blocks */
+}
+
+.header .scrollX {
+  scrollbar-gutter: stable;
 }
 
 .timeColHeader {
@@ -20,30 +46,24 @@
   text-transform: uppercase;
   letter-spacing: 0.4px;
   border-right: 1px solid var(--border);
-}
 
-.stageHeaders {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(220px, 1fr);
-}
-
-.stageHeader {
-  padding: 10px 12px;
-  border-right: 1px solid var(--border);
-  font-weight: 800;
-  font-size: 13px;
+  position: sticky;
+  left: 0;
+  z-index: 6; /* above stage headers */
+  background: var(--panel2);
 }
 
 .body {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: var(--time-col) 1fr;
 }
 
 .timeCol {
-  position: relative;
-  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 2;
   background: rgba(0, 0, 0, 0.12);
+  border-right: 1px solid var(--border);
 }
 
 .tick {
@@ -61,9 +81,31 @@
   color: var(--muted);
 }
 
+/* shared horizontal scroll for header + body */
+.scrollX {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* header stage labels */
+.stageHeaders {
+  display: flex;
+  width: fit-content;
+}
+
+.stageHeader {
+  width: var(--stage-col);
+  padding: 10px 12px;
+  border-right: 1px solid var(--border);
+  font-weight: 800;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+/* timeline grid area */
 .grid {
   position: relative;
-  overflow-x: auto;
+  width: fit-content;
 }
 
 .hLine {
@@ -79,11 +121,13 @@
   position: relative;
   display: inline-block;
   vertical-align: top;
-  width: 280px;
+  width: var(--stage-col);
   border-right: 1px solid var(--border);
   height: 100%;
+  box-sizing: border-box;
 }
 
+/* ✅ band blocks (restored) */
 .block {
   position: absolute;
   left: 10px;
@@ -124,6 +168,7 @@
 
 .blockTitle {
   font-weight: 900;
+  letter-spacing: 0.2px;
 }
 
 .blockMeta {

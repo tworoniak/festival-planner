@@ -20,8 +20,8 @@
         "stageId": "main",
         "bandName": "SAXON",
         "genres": ["nwobhm", "metal"],
-        "start": "2026-07-06T18:30:00",
-        "end": "2026-07-06T19:15:00"
+        "start": "2026-07-06T21:30:00",
+        "end": "2026-07-06T22:15:00"
       },
       {
         "id": "boa2",
@@ -29,8 +29,8 @@
         "stageId": "main",
         "bandName": "EVIL SCARECROW",
         "genres": ["black metal", "thrash metal"],
-        "start": "2026-07-06T18:45:00",
-        "end": "2026-07-06T19:30:00"
+        "start": "2026-07-06T19:45:00",
+        "end": "2026-07-06T20:30:00"
       },
       {
         "id": "boa3",
@@ -47,8 +47,8 @@
         "stageId": "sophie",
         "bandName": "CRYPTOPSY",
         "genres": ["death metal"],
-        "start": "2026-07-06T20:15:00",
-        "end": "2026-07-06T21:10:00"
+        "start": "2026-07-06T22:15:00",
+        "end": "2026-07-06T23:10:00"
       },
       {
         "id": "boa5",
@@ -83,8 +83,80 @@
         "stageId": "main",
         "bandName": "LAMB OF GOD",
         "genres": ["metal", "groove metal"],
+        "start": "2026-07-07T23:00:00",
+        "end": "2026-07-07T23:50:00"
+      },
+      {
+        "id": "boa9",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "SEPULTURA",
+        "genres": ["metal", "groove metal"],
+        "start": "2026-07-07T22:00:00",
+        "end": "2026-07-07T22:50:00"
+      },
+      {
+        "id": "boa10",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "MUNICAPL WASTE",
+        "genres": ["thrash metal", "groove metal"],
         "start": "2026-07-07T21:00:00",
         "end": "2026-07-07T21:50:00"
+      },
+      {
+        "id": "boa11",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "BIOHAZARD",
+        "genres": ["hardcore", "groove metal"],
+        "start": "2026-07-07T20:00:00",
+        "end": "2026-07-07T20:50:00"
+      },
+      {
+        "id": "boa12",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "FIT FOR AN AUTOPSY",
+        "genres": ["deathcore"],
+        "start": "2026-07-07T19:00:00",
+        "end": "2026-07-07T19:50:00"
+      },
+      {
+        "id": "boa13",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "LIFE OF AGONY",
+        "genres": ["alternative metal"],
+        "start": "2026-07-07T18:00:00",
+        "end": "2026-07-07T18:50:00"
+      },
+      {
+        "id": "boa14",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "SKYND",
+        "genres": ["industrial rock"],
+        "start": "2026-07-07T17:00:00",
+        "end": "2026-07-07T17:50:00"
+      },
+      {
+        "id": "boa15",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "PARTY CANNON",
+        "genres": ["metal", "party slam"],
+        "start": "2026-07-07T16:00:00",
+        "end": "2026-07-07T16:50:00"
+      },
+      {
+        "id": "boa16",
+        "dayId": "fri",
+        "stageId": "main",
+        "bandName": "BATTLESNAKE",
+        "genres": ["metal"],
+        "start": "2026-07-07T15:00:00",
+        "end": "2026-07-07T15:50:00"
       }
     ]
   }
