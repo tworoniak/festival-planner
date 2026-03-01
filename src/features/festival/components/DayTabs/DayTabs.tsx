@@ -9,7 +9,11 @@ type Props = {
 
 export function DayTabs({ days, value, onChange }: Props) {
   return (
-    <div className={styles.tabs} role='tablist' aria-label='Festival days'>
+    <div
+      className={`${styles.tabs} noPrint`}
+      role='tablist'
+      aria-label='Festival days'
+    >
       {days.map((d) => {
         const active = d.id === value;
         return (

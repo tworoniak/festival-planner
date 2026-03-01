@@ -1,15 +1,16 @@
+import { useRef } from 'react';
 import styles from './TimelineView.module.scss';
 import type { FestivalSet, FestivalStage } from '../../types/festival';
 import { formatTime } from '../../utils/time';
 
 type Props = {
   stages: FestivalStage[];
-  sets: FestivalSet[]; // expects already filtered to a single day
+  sets: FestivalSet[];
   plannedIds: Set<string>;
   conflictingIds: Set<string>;
   highlightedSetId?: string | null;
   onTogglePlanned: (setId: string) => void;
-  onResolveScroll: (setId: string) => void; // scroll/highlight behavior
+  onResolveScroll: (setId: string) => void;
 };
 
 function minutesSinceMidnight(iso: string) {
@@ -26,9 +27,20 @@ export function TimelineView({
   onTogglePlanned,
   onResolveScroll,
 }: Props) {
-  if (sets.length === 0) {
-    return <div className={styles.empty}>No sets match filters.</div>;
+  const headerScrollRef = useRef<HTMLDivElement | null>(null);
+  const bodyScrollRef = useRef<HTMLDivElement | null>(null);
+
+  function syncScroll(from: 'header' | 'body') {
+    const header = headerScrollRef.current;
+    const body = bodyScrollRef.current;
+    if (!header || !body) return;
+
+    if (from === 'header') body.scrollLeft = header.scrollLeft;
+    else header.scrollLeft = body.scrollLeft;
   }
+
+  if (sets.length === 0)
+    return <div className={styles.empty}>No sets match filters.</div>;
 
   const minStart = Math.min(...sets.map((s) => minutesSinceMidnight(s.start)));
   const maxEnd = Math.max(...sets.map((s) => minutesSinceMidnight(s.end)));
@@ -38,17 +50,14 @@ export function TimelineView({
   const endMin = Math.min(24 * 60, maxEnd + pad);
   const totalMins = Math.max(1, endMin - startMin);
 
-  // height scale: 2px per minute (~120px/hour)
   const pxPerMin = 2;
   const height = totalMins * pxPerMin;
 
-  // Build hour ticks
   const firstHour = Math.ceil(startMin / 60);
   const lastHour = Math.floor(endMin / 60);
-  const hours = [];
+  const hours: number[] = [];
   for (let h = firstHour; h <= lastHour; h++) hours.push(h);
 
-  // group sets by stage
   const byStage = new Map<string, FestivalSet[]>();
   for (const s of sets) {
     const arr = byStage.get(s.stageId) ?? [];
@@ -63,18 +72,27 @@ export function TimelineView({
   }
 
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} timelinePrint`}>
+      {/* Header */}
       <div className={styles.header}>
         <div className={styles.timeColHeader}>Time</div>
-        <div className={styles.stageHeaders}>
-          {stages.map((st) => (
-            <div key={st.id} className={styles.stageHeader}>
-              {st.label}
-            </div>
-          ))}
+
+        <div
+          className={styles.scrollX}
+          ref={headerScrollRef}
+          onScroll={() => syncScroll('header')}
+        >
+          <div className={styles.stageHeaders}>
+            {stages.map((st) => (
+              <div key={st.id} className={styles.stageHeader}>
+                {st.label}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
+      {/* Body */}
       <div className={styles.body}>
         <div className={styles.timeCol} style={{ height }}>
           {hours.map((h) => {
@@ -89,68 +107,75 @@ export function TimelineView({
           })}
         </div>
 
-        <div className={styles.grid} style={{ height }}>
-          {/* horizontal lines */}
-          {hours.map((h) => {
-            const y = (h * 60 - startMin) * pxPerMin;
-            return <div key={h} className={styles.hLine} style={{ top: y }} />;
-          })}
+        <div
+          className={styles.scrollX}
+          ref={bodyScrollRef}
+          onScroll={() => syncScroll('body')}
+        >
+          <div className={styles.grid} style={{ height }}>
+            {hours.map((h) => {
+              const y = (h * 60 - startMin) * pxPerMin;
+              return (
+                <div key={h} className={styles.hLine} style={{ top: y }} />
+              );
+            })}
 
-          {stages.map((st) => {
-            const stageSets = byStage.get(st.id) ?? [];
-            return (
-              <div key={st.id} className={styles.col}>
-                {stageSets.map((s) => {
-                  const top =
-                    (minutesSinceMidnight(s.start) - startMin) * pxPerMin;
-                  const bottom =
-                    (minutesSinceMidnight(s.end) - startMin) * pxPerMin;
-                  const h = Math.max(18, bottom - top);
+            {stages.map((st) => {
+              const stageSets = byStage.get(st.id) ?? [];
+              return (
+                <div key={st.id} className={styles.col}>
+                  {stageSets.map((s) => {
+                    const top =
+                      (minutesSinceMidnight(s.start) - startMin) * pxPerMin;
+                    const bottom =
+                      (minutesSinceMidnight(s.end) - startMin) * pxPerMin;
+                    const h = Math.max(18, bottom - top);
 
-                  const planned = plannedIds.has(s.id);
-                  const conflicting = conflictingIds.has(s.id);
-                  const highlight = highlightedSetId === s.id;
+                    const planned = plannedIds.has(s.id);
+                    const conflicting = conflictingIds.has(s.id);
+                    const highlight = highlightedSetId === s.id;
 
-                  return (
-                    <div
-                      key={s.id}
-                      id={`set-${s.id}`} // keep scroll target consistent
-                      className={[
-                        styles.block,
-                        planned ? styles.planned : '',
-                        conflicting ? styles.conflict : '',
-                        highlight ? styles.highlight : '',
-                      ].join(' ')}
-                      style={{ top, height: h }}
-                      role='button'
-                      tabIndex={0}
-                      onClick={() => onResolveScroll(s.id)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ')
-                          onResolveScroll(s.id);
-                      }}
-                    >
-                      <div className={styles.blockTitle}>{s.bandName}</div>
-                      <div className={styles.blockMeta}>
-                        {formatTime(s.start)}–{formatTime(s.end)}
-                      </div>
-
-                      <button
-                        type='button'
-                        className={styles.blockBtn}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onTogglePlanned(s.id);
+                    return (
+                      <div
+                        key={s.id}
+                        id={`set-${s.id}`}
+                        className={[
+                          styles.block,
+                          planned ? styles.planned : '',
+                          conflicting ? styles.conflict : '',
+                          highlight ? styles.highlight : '',
+                        ].join(' ')}
+                        style={{ top, height: h }}
+                        role='button'
+                        tabIndex={0}
+                        onClick={() => onResolveScroll(s.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ')
+                            onResolveScroll(s.id);
                         }}
                       >
-                        {planned ? 'Remove' : 'Add'}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+                        <div className={styles.blockTitle}>{s.bandName}</div>
+                        <div className={styles.blockMeta}>
+                          {formatTime(s.start)}–{formatTime(s.end)}
+                        </div>
+
+                        <button
+                          type='button'
+                          className={styles.blockBtn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onTogglePlanned(s.id);
+                          }}
+                        >
+                          {planned ? 'Remove' : 'Add'}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

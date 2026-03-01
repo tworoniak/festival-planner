@@ -25,3 +25,82 @@ input {
   margin: 0 auto;
   padding: 16px;
 }
+
+@media print {
+  .noPrint {
+    display: none !important;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  .printHeader {
+    break-after: avoid-page;
+    page-break-after: avoid;
+    margin-bottom: 6mm !important;
+  }
+
+  .timelinePrint {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    break-inside: avoid;
+  }
+  .timelinePrint .block {
+    break-inside: avoid;
+  }
+  .timelinePrint .header {
+    position: static !important;
+    box-shadow: none !important;
+  }
+  /* Also expand any horizontal scroll wrappers so all stages print */
+  .timelinePrint .scrollX {
+    overflow: visible !important;
+  }
+}
+
+/* ===============================
+   Dark Themed Scrollbars
+   =============================== */
+
+/* WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.55),
+    rgba(139, 92, 246, 0.35)
+  );
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.8),
+    rgba(139, 92, 246, 0.6)
+  );
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.6) rgba(255, 255, 255, 0.05);
+}

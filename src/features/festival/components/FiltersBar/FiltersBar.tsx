@@ -22,7 +22,7 @@ export function FiltersBar({
   onToggleFavoritesOnly,
 }: Props) {
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} noPrint`}>
       <div className={styles.row}>
         <input
           className={styles.search}

@@ -1,13 +1,19 @@
 import styles from './ViewToggle.module.scss';
 
+type View = 'list' | 'timeline' | 'plan';
+
 type Props = {
-  value: 'list' | 'timeline';
-  onChange: (v: 'list' | 'timeline') => void;
+  value: View;
+  onChange: (v: View) => void;
 };
 
 export function ViewToggle({ value, onChange }: Props) {
   return (
-    <div className={styles.wrap} role='tablist' aria-label='View toggle'>
+    <div
+      className={`${styles.wrap} noPrint`}
+      role='tablist'
+      aria-label='View toggle'
+    >
       <button
         type='button'
         role='tab'
@@ -17,6 +23,7 @@ export function ViewToggle({ value, onChange }: Props) {
       >
         List
       </button>
+
       <button
         type='button'
         role='tab'
@@ -25,6 +32,16 @@ export function ViewToggle({ value, onChange }: Props) {
         onClick={() => onChange('timeline')}
       >
         Timeline
+      </button>
+
+      <button
+        type='button'
+        role='tab'
+        aria-selected={value === 'plan'}
+        className={`${styles.btn} ${value === 'plan' ? styles.active : ''}`}
+        onClick={() => onChange('plan')}
+      >
+        My Plan
       </button>
     </div>
   );
