@@ -34,6 +34,12 @@
   overflow: hidden;
   box-shadow: var(--shadow);
   display: grid;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: var(--accent);
+    transform: translate3d(0px, -3px, 0px);
+  }
 }
 
 @media (min-width: 860px) {
