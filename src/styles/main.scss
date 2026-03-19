@@ -1,3 +1,5 @@
-@use './abstracts/tokens';
-@use './base/reset';
-@use './base/globals';
+@forward './abstracts/tokens.scss';
+@forward './abstracts/mixins.scss';
+@forward './abstracts/variables.scss';
+@forward './base/reset';
+@forward './base/globals';

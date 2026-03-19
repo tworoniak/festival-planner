@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import styles from './TimelineView.module.scss';
 import type { FestivalSet, FestivalStage } from '../../types/festival';
 import { formatTime } from '../../utils/time';
+import { Plus, Minus } from 'lucide-react';
 
 type Props = {
   stages: FestivalStage[];
@@ -167,7 +168,15 @@ export function TimelineView({
                             onTogglePlanned(s.id);
                           }}
                         >
-                          {planned ? 'Remove' : 'Add'}
+                          {planned ? (
+                            <>
+                              <Minus />
+                            </>
+                          ) : (
+                            <>
+                              <Plus size={18} />
+                            </>
+                          )}
                         </button>
                       </div>
                     );

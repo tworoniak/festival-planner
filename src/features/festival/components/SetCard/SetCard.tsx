@@ -1,6 +1,7 @@
 import styles from './SetCard.module.scss';
 import type { FestivalSet } from '../../types/festival';
 import { formatRange } from '../../utils/time';
+import { Plus, Minus } from 'lucide-react';
 
 type Props = {
   set: FestivalSet;
@@ -74,7 +75,17 @@ export function SetCard({
             className={styles.planBtn}
             onClick={onTogglePlanned}
           >
-            {isPlanned ? 'Remove' : 'Add'}
+            {isPlanned ? (
+              <>
+                <Minus size={14} />
+                Remove
+              </>
+            ) : (
+              <>
+                <Plus size={14} />
+                Add
+              </>
+            )}
           </button>
         </div>
       </div>
