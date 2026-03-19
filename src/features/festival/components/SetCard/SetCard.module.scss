@@ -71,6 +71,10 @@
   height: 36px;
   border-radius: 10px;
   cursor: pointer;
+
+  &:hover {
+    border-color: var(--accent);
+  }
 }
 
 .planBtn {
@@ -80,6 +84,13 @@
   padding: 9px 12px;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &:hover {
+    border-color: var(--accent);
+  }
 }
 
 @keyframes pulseRing {

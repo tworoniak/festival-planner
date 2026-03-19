@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.flexInner}>
-        <span className={styles.brand}>Festival Planner</span>
+        <span className={styles.logoText}>Festival Planner</span>
       </div>
     </header>
   );

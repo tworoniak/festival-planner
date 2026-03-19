@@ -47,6 +47,9 @@
   padding: 7px 10px;
   border-radius: 999px;
   cursor: pointer;
+  &:hover {
+    border-color: var(--accent);
+  }
 }
 
 .active {
