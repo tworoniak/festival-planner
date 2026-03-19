@@ -1,22 +1,36 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ToastProvider } from '../components/ui/Toast/ToastProvider';
-import { FestivalListPage } from '../features/festival/pages/FestivalListPage';
-import { FestivalPage } from '../features/festival/pages/FestivalPage';
-import ScrollToTop from '../components/ui/Scroll/ScrollToTop';
-import ScrollToTopButton from '../components/ui/Scroll/ScrollToTopButton';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router.tsx';
+import { ToastProvider } from '../components/ui/Toast/ToastProvider.tsx';
 
-export default function App() {
+// import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+// import { ToastProvider } from '../components/ui/Toast/ToastProvider';
+// import { FestivalListPage } from '../features/festival/pages/FestivalListPage';
+// import { FestivalPage } from '../features/festival/pages/FestivalPage';
+// import ScrollToTop from '../components/ui/Scroll/ScrollToTop';
+// import ScrollToTopButton from '../components/ui/Scroll/ScrollToTopButton';
+
+// export default function App() {
+//   return (
+//     <ToastProvider>
+//       <BrowserRouter>
+//         <ScrollToTop />
+//         <Routes>
+//           <Route path='/' element={<FestivalListPage />} />
+//           <Route path='/festivals/:festivalId' element={<FestivalPage />} />
+//           <Route path='*' element={<Navigate to='/' replace />} />
+//         </Routes>
+//         <ScrollToTopButton />
+//       </BrowserRouter>
+//     </ToastProvider>
+//   );
+// }
+
+function App() {
   return (
     <ToastProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path='/' element={<FestivalListPage />} />
-          <Route path='/festivals/:festivalId' element={<FestivalPage />} />
-          <Route path='*' element={<Navigate to='/' replace />} />
-        </Routes>
-        <ScrollToTopButton />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </ToastProvider>
   );
 }
+
+export default App;
